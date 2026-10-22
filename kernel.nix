@@ -2,6 +2,7 @@
   lib,
   buildLinux,
   fetchurl,
+  applyPatches,
   stdenvLLVM,
   ltoMakeflags,
   amdgpu ? true,
@@ -29,17 +30,20 @@ buildLinux (
     pname = "niko-kernel";
     modDirVersion = "${version}-niko";
 
-    src = fetchurl {
-      url = "https://github.com/CachyOS/linux/releases/download/${cachyRel}/${cachyRel}.tar.gz";
-      hash = "sha256-Aq+KYRVZbSDpmYkmlT8gQPjX9myhEi85nFkgqWAfHO8=";
+    src = applyPatches {
+      name = "niko-kernel-${version}-src";
+      src = fetchurl {
+        url = "https://github.com/CachyOS/linux/releases/download/${cachyRel}/${cachyRel}.tar.gz";
+        hash = "sha256-Aq+KYRVZbSDpmYkmlT8gQPjX9myhEi85nFkgqWAfHO8=";
+      };
+      postPatch = ''
+        cp ${cachyConfig} arch/x86/configs/niko_defconfig
+      '';
     };
 
     stdenv = stdenvLLVM;
     extraMakeFlags = ltoMakeflags;
 
-    postPatch = ''
-      cp ${cachyConfig} arch/x86/configs/niko_defconfig
-    '';
     defconfig = "niko_defconfig";
 
     ignoreConfigErrors = true;
