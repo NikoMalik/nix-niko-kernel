@@ -6,6 +6,10 @@
   ltoMakeflags,
   amdgpu ? true,
   polly ? false,
+  kernelPatches ? import ./patches.nix,
+  structuredExtraConfig ? import ./config.nix { inherit lib amdgpu polly; },
+  features ? { },
+  randstructSeed ? "",
   argsOverride ? { },
 }:
 
@@ -40,9 +44,12 @@ buildLinux (
 
     ignoreConfigErrors = true;
 
-    kernelPatches = import ./patches.nix;
-
-    structuredExtraConfig = import ./config.nix { inherit lib amdgpu polly; };
+    inherit
+      kernelPatches
+      structuredExtraConfig
+      features
+      randstructSeed
+      ;
 
     extraMeta = {
       branch = lib.versions.majorMinor version;

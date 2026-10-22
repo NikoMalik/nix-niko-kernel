@@ -20,6 +20,7 @@
         pkgs.callPackage ./kernel.nix {
           inherit amdgpu polly argsOverride;
           inherit (llvm) stdenvLLVM ltoMakeflags;
+          kernelPatches = import ./patches.nix;
         };
 
       mkPackages = kernel: llvm.kernelModuleLLVMOverride (pkgs.linuxPackagesFor kernel);
