@@ -1,0 +1,14 @@
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 035cccbc9..c56793f84 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -73,7 +73,7 @@
+  * If no ancestor relationship:
+  * arbitrary, since it's serialized on rename_lock
+  */
+-static int sysctl_vfs_cache_pressure __read_mostly = 100;
++static int sysctl_vfs_cache_pressure __read_mostly = 50;
+ static int sysctl_vfs_cache_pressure_denom __read_mostly = 100;
+ 
+ unsigned long vfs_pressure_ratio(unsigned long val)
+
