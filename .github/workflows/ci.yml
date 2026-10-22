@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    # NOTE: a clang+ThinLTO kernel will not build on the default GitHub runner
+    # (7 GB RAM / 2 cores). Use a self-hosted runner or a binary cache
+    # (cachix/attic) that already has the kernel, then this just runs the QEMU
+    # boot test. Also fill the real hashes in kernel.nix first (lib.fakeHash).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            system-features = nixos-test benchmark big-parallel kvm
+      - run: nix flake check -L

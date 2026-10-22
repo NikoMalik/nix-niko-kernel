@@ -2,8 +2,10 @@
   lib,
   buildLinux,
   fetchurl,
-  llvmPackages,
+  stdenvLLVM,
+  ltoMakeflags,
   amdgpu ? true,
+  polly ? false,
   argsOverride ? { },
 }:
 
@@ -28,8 +30,8 @@ buildLinux (
       hash = lib.fakeHash;
     };
 
-    stdenv = llvmPackages.stdenv;
-    extraMakeFlags = [ "LLVM=1" ];
+    stdenv = stdenvLLVM;
+    extraMakeFlags = ltoMakeflags;
 
     postPatch = ''
       cp ${cachyConfig} arch/x86/configs/niko_defconfig
@@ -40,7 +42,7 @@ buildLinux (
 
     kernelPatches = import ./patches.nix;
 
-    structuredExtraConfig = import ./config.nix { inherit lib amdgpu; };
+    structuredExtraConfig = import ./config.nix { inherit lib amdgpu polly; };
 
     extraMeta = {
       branch = lib.versions.majorMinor version;

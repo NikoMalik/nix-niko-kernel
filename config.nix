@@ -1,6 +1,7 @@
 {
   lib,
   amdgpu ? true,
+  polly ? false,
 }:
 
 let
@@ -138,6 +139,9 @@ in
   SLUB_DEBUG = no;
   SND_DEBUG = no;
   MITIGATION_SLS = no;
+}
+// lib.optionalAttrs polly {
+  POLLY_CLANG = yes;
 }
 // lib.optionalAttrs (!amdgpu) {
   DRM_AMDGPU = no;

@@ -11,12 +11,18 @@
         inherit system;
         config.allowUnfree = true;
       };
+      lib = pkgs.lib;
 
-      llvmPackages = pkgs.llvmPackages_latest;
+      llvm = import ./llvm.nix { inherit pkgs lib; };
 
       mkKernel =
-        { amdgpu ? true, argsOverride ? { } }:
-        pkgs.callPackage ./kernel.nix { inherit amdgpu argsOverride llvmPackages; };
+        { amdgpu ? true, polly ? false, argsOverride ? { } }:
+        pkgs.callPackage ./kernel.nix {
+          inherit amdgpu polly argsOverride;
+          inherit (llvm) stdenvLLVM ltoMakeflags;
+        };
+
+      mkPackages = kernel: llvm.kernelModuleLLVMOverride (pkgs.linuxPackagesFor kernel);
 
       niko-kernel = mkKernel { amdgpu = true; };
       niko-kernel-noamdgpu = mkKernel { amdgpu = false; };
@@ -28,27 +34,24 @@
       };
 
       legacyPackages.${system} = {
-        linuxPackages-niko = pkgs.linuxPackagesFor niko-kernel;
-        linuxPackages-niko-noamdgpu = pkgs.linuxPackagesFor niko-kernel-noamdgpu;
+        linuxPackages-niko = mkPackages niko-kernel;
+        linuxPackages-niko-noamdgpu = mkPackages niko-kernel-noamdgpu;
+      };
+
+      checks.${system}.boot = import ./tests.nix {
+        inherit pkgs;
+        linuxPackages = mkPackages niko-kernel;
       };
 
       nixosModules.default =
-        { pkgs, ... }:
+        { ... }:
         {
-          boot.kernelPackages = pkgs.linuxPackagesFor (
-            pkgs.callPackage ./kernel.nix {
-              amdgpu = true;
-              llvmPackages = pkgs.llvmPackages_latest;
-            }
-          );
+          boot.kernelPackages = mkPackages niko-kernel;
         };
 
-      overlays.default = final: _prev: {
-        niko-kernel = final.callPackage ./kernel.nix {
-          amdgpu = true;
-          llvmPackages = final.llvmPackages_latest;
-        };
-        linuxPackages-niko = final.linuxPackagesFor final.niko-kernel;
+      overlays.default = _final: _prev: {
+        niko-kernel = niko-kernel;
+        linuxPackages-niko = mkPackages niko-kernel;
       };
     };
 }

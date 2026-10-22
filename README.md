@@ -61,13 +61,31 @@ nix build .#niko-kernel-noamdgpu
 ```
 or `mkKernel { amdgpu = false; }`.
 
+## polly
+
+Off by default. `mkKernel { polly = true; }` sets `POLLY_CLANG=y`. Needs a
+Polly-capable LLVM — the default nixpkgs `clang` has no Polly, so `-mllvm -polly`
+fails there; supply an `llvmPackages` built with Polly before enabling. Polly
+also has a track record of miscompiling large codebases, so leave it off unless
+you know the LLVM has it.
+
 ## Toolchain
 
-clang + ThinLTO only (no GCC — the patches are clang-only). `kernel.nix` sets
-`stdenv = llvmPackages.stdenv` + `extraMakeFlags = [ "LLVM=1" ]`, config has
-`LTO_CLANG_THIN=y`. `llvmPackages_latest` is used; pin a specific
-`llvmPackages_NN` in `flake.nix` if a newer clang breaks the build. If clang is
-not picked up, override explicitly: `(niko-kernel).override { stdenv = llvmPackages.stdenv; }`.
+clang + ThinLTO only (no GCC — the patches are clang-only), config has
+`LTO_CLANG_THIN=y`. The full LLVM toolchain is wired in `llvm.nix` (pattern from
+nixpkgs#129806 / lovesegfault's linux-lto):
+
+- `stdenvLLVM` — a `clangUseLLVM` stdenv (pure LLVM, no GNU binutils) with the
+  kernel `makeFlags` extended by `ltoMakeflags`.
+- `ltoMakeflags` — `LLVM=1 LLVM_IAS=1` plus explicit `CC/LD/AR/NM/STRIP/OBJCOPY/
+  OBJDUMP/READELF` and the `HOST*` equivalents all pointing at LLVM, so the host
+  side is clang too (not GCC).
+- `kernelModuleLLVMOverride` — wraps `linuxPackagesFor` so out-of-tree modules
+  (nvidia, zfs, …) build with the same LLVM flags and their `gcc` Makefile
+  hardcodes are rewritten to `cc`. `linuxPackages-niko` already goes through it.
+
+To pin a clang version, override `llvmPackages` in `llvm.nix`
+(`pkgs.pkgsBuildHost.llvmPackages` → e.g. `llvmPackages_20`).
 
 
 ## Notes
