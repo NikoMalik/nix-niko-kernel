@@ -6,8 +6,8 @@
 
 let
   inherit (lib.kernel) yes no module freeform;
-in
-{
+
+  cfg = {
   LOCALVERSION = freeform "-niko";
 
   CACHY = yes;
@@ -155,4 +155,6 @@ in
   DRM_RADEON = no;
   DRM_TTM = no;
   DRM_TTM_HELPER = no;
-}
+};
+in
+lib.mapAttrs (_: lib.mkForce) cfg
