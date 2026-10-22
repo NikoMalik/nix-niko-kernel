@@ -20,7 +20,7 @@ let
 
   cachyConfig = fetchurl {
     url = "https://raw.githubusercontent.com/CachyOS/linux-cachyos/${configCommit}/linux-cachyos-bore/config";
-    hash = lib.fakeHash;
+    hash = "sha256-PfMxEuM1f+tqiZu/wAby3tFSJtGy63QayYbVgbnKd3M=";
   };
 in
 buildLinux (
@@ -31,7 +31,7 @@ buildLinux (
 
     src = fetchurl {
       url = "https://github.com/CachyOS/linux/releases/download/${cachyRel}/${cachyRel}.tar.gz";
-      hash = lib.fakeHash;
+      hash = "sha256-Aq+KYRVZbSDpmYkmlT8gQPjX9myhEi85nFkgqWAfHO8=";
     };
 
     stdenv = stdenvLLVM;

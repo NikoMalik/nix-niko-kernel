@@ -10,24 +10,16 @@ together with amdgpu in the `-noamdgpu` variant.
 - `kernel.nix` — the `buildLinux` derivation, pulls the pre-sauced CachyOS source tarball
 - `config.nix` — kernel config as `structuredExtraConfig` (bore, O3, BBR, full tick/preempt, amdgpu off)
 
-## First build: fill two things
+## Versions and hashes
 
-1. **Source hash.** `kernel.nix` ships `hash = lib.fakeHash`. Run a build, copy
-   the real hash from the error, paste it in:
-   ```
-   nix build .#niko-kernel
-   # error: hash mismatch ... got: sha256-....
-   ```
-   Or prefetch:
-   ```
-   nix store prefetch-file --name cachyos-7.2.10-1.tar.gz \
-     https://github.com/CachyOS/linux/releases/download/cachyos-7.2.10-1/cachyos-7.2.10-1.tar.gz
-   ```
+`kernel.nix` pins two fetches, both with real hashes already filled:
+- the CachyOS source tarball `cachyos-7.2.10-1.tar.gz`;
+- the base config `linux-cachyos-bore/config` at `configCommit`, dropped into
+  `arch/x86/configs/niko_defconfig` — `structuredExtraConfig` (`config.nix`) layers on top.
 
-2. **cachy config hash.** `kernel.nix` also fetches the base config
-   (`linux-cachyos-bore/config` pinned at `configCommit`,with `hash = lib.fakeHash`. Fill it the same way as
-   the source hash. It is dropped into `arch/x86/configs/niko_defconfig` and used
-   as the base; `structuredExtraConfig` (`config.nix`) layers on top.
+When bumping `version` / `configCommit`, set the matching `hash` back to
+`lib.fakeHash`, run `nix build .#niko-kernel`, and paste the real hash from the
+`got: sha256-...` error (or `nix store prefetch-file <url>`).
 
 ## Use in NixOS
 
