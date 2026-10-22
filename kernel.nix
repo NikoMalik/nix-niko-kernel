@@ -5,10 +5,11 @@
   applyPatches,
   stdenvLLVM,
   ltoMakeflags,
-  amdgpu ? true,
-  polly ? false,
-  kernelPatches ? import ./patches.nix,
-  structuredExtraConfig ? import ./config.nix { inherit lib amdgpu polly; },
+  # everything config.nix takes: amdgpu, nouveau, polly, bore, cachy, native, hz, preempt, ...
+  kconfig ? { },
+  # passed explicitly: callPackage would fill it with pkgs.kernelPatches
+  kernelPatches,
+  structuredExtraConfig ? import ./config.nix ({ inherit lib; } // kconfig),
   features ? { },
   randstructSeed ? "",
   argsOverride ? { },
@@ -57,7 +58,7 @@ buildLinux (
 
     extraMeta = {
       branch = lib.versions.majorMinor version;
-      description = "niko-kernel ${version} (bore, clang+thinLTO), amdgpu ${if amdgpu then "on" else "off"}";
+      description = "niko-kernel ${version} (clang+thinLTO)";
     };
   }
   // argsOverride

@@ -1,8 +1,21 @@
 {
   lib,
   amdgpu ? true,
+  nouveau ? false,
   polly ? false,
+  bore ? true,
+  cachy ? true,
+  native ? true,
+  hz ? 1000,
+  # "full" | "lazy" | "none"
+  preempt ? "full",
+  preemptDynamic ? preempt == "full",
+  nohzFull ? true,
+  extraConfig ? { },
 }:
+
+# 7.2 only allows preempt=none as a static model (see 7.2.10-preempt_none.patch)
+assert preempt == "none" -> !preemptDynamic;
 
 let
   inherit (lib.kernel) yes no module freeform;
@@ -10,33 +23,28 @@ let
   cfg = {
   LOCALVERSION = freeform "-niko";
 
-  CACHY = yes;
-  SCHED_BORE = yes;
+  CACHY = if cachy then yes else no;
+  SCHED_BORE = if bore then yes else no;
 
   LTO_NONE = no;
   LTO_CLANG_THIN = yes;
 
-  X86_NATIVE_CPU = yes;
-  GENERIC_CPU = no;
+  X86_NATIVE_CPU = if native then yes else no;
+  GENERIC_CPU = if native then no else yes;
 
-  HZ_300 = no;
-  HZ_1000 = yes;
-  HZ = freeform "1000";
+  HZ = freeform (toString hz);
 
   HZ_PERIODIC = no;
-  NO_HZ_IDLE = no;
-  CONTEXT_TRACKING_FORCE = no;
-  NO_HZ_FULL_NODEF = yes;
-  NO_HZ_FULL = yes;
+  NO_HZ_IDLE = if nohzFull then no else yes;
+  NO_HZ_FULL = if nohzFull then yes else no;
   NO_HZ = yes;
   NO_HZ_COMMON = yes;
-  CONTEXT_TRACKING = yes;
 
-  PREEMPT_DYNAMIC = yes;
-  PREEMPT = yes;
+  PREEMPT_DYNAMIC = if preemptDynamic then yes else no;
+  PREEMPT = if preempt == "full" then yes else no;
+  PREEMPT_LAZY = if preempt == "lazy" then yes else no;
+  PREEMPT_NONE = if preempt == "none" then yes else no;
   PREEMPT_VOLUNTARY = no;
-  PREEMPT_LAZY = no;
-  PREEMPT_NONE = no;
 
   CC_OPTIMIZE_FOR_PERFORMANCE = no;
   CC_OPTIMIZE_FOR_PERFORMANCE_O3 = yes;
@@ -64,7 +72,7 @@ let
   BUSY_POLL = yes;
   PER_VMA_LOCK = yes;
 
-  DRM_NOUVEAU = no;
+  DRM_NOUVEAU = if nouveau then module else no;
 
   # keep BPF and tracing fully working
   FTRACE = yes;
@@ -140,6 +148,14 @@ let
   SND_DEBUG = no;
   MITIGATION_SLS = no;
 }
+// builtins.listToAttrs (
+  map (n: lib.nameValuePair "HZ_${toString n}" (if n == hz then yes else no)) [ 100 250 300 500 600 750 1000 ]
+)
+// lib.optionalAttrs nohzFull {
+  CONTEXT_TRACKING_FORCE = no;
+  NO_HZ_FULL_NODEF = yes;
+  CONTEXT_TRACKING = yes;
+}
 // lib.optionalAttrs polly {
   POLLY_CLANG = yes;
 }
@@ -153,8 +169,12 @@ let
   DRM_AMD_DC_SI = no;
   HSA_AMD = no;
   DRM_RADEON = no;
+}
+# TTM is only selectable thanks to the ttm patch; nouveau selects it too
+// lib.optionalAttrs (!amdgpu && !nouveau) {
   DRM_TTM = no;
   DRM_TTM_HELPER = no;
-};
+}
+// extraConfig;
 in
 lib.mapAttrs (_: lib.mkForce) cfg
