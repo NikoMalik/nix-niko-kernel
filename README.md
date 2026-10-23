@@ -2,7 +2,7 @@
 
 CachyOS 7.2 bore kernel, packaged for NixOS. amdgpu is on by default; the TTM
 patch makes `DRM_TTM`/`DRM_TTM_HELPER` selectable so they can be forced off
-together with amdgpu in the `-noamdgpu` variant.
+with `ttm = false`.
 
 ## Layout
 
@@ -64,14 +64,17 @@ instead of `NO_HZ_FULL` + context tracking, no amdgpu, no nouveau.
 `7.2.10-preempt_none.patch` drops that and is only applied when `preempt = "none"`.
 
 Every knob is a `config.nix` parameter, defaults = desktop:
-`amdgpu nouveau polly bore cachy native hz preempt preemptDynamic nohzFull extraConfig`.
+`amdgpu nouveau ttm polly bore cachy native hz preempt preemptDynamic nohzFull extraConfig`.
 ```nix
 boot.kernelPackages = niko-kernel.lib.mkPackages (niko-kernel.lib.mkKernel (
   niko-kernel.lib.profiles.server // { hz = 250; native = false; extraConfig = { KVM = lib.kernel.module; }; }
 ));
 ```
 `native = false` -> `GENERIC_CPU`, needed when the build host CPU differs from the server's.
-`nouveau = true` keeps TTM on (nouveau selects it).
+`ttm = false` (needs `amdgpu`/`nouveau` off) also drops i915, xe, qxl, vmwgfx,
+vboxvideo and hibmc — all of them select TTM, so it can't go while any is left.
+Every option answered `n` is also unset in the defconfig before `make config`,
+otherwise e.g. `DRM_TTM=n` is rejected: it is asked before the drivers that select it.
 
 ## polly
 

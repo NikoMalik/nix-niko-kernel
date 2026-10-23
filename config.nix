@@ -2,6 +2,8 @@
   lib,
   amdgpu ? true,
   nouveau ? false,
+  # false drops TTM and every driver selecting it (amdgpu radeon nouveau i915 xe qxl vmwgfx vboxvideo hibmc)
+  ttm ? true,
   polly ? false,
   bore ? true,
   cachy ? true,
@@ -16,6 +18,7 @@
 
 # 7.2 only allows preempt=none as a static model (see 7.2.10-preempt_none.patch)
 assert preempt == "none" -> !preemptDynamic;
+assert !ttm -> !amdgpu && !nouveau;
 
 let
   inherit (lib.kernel) yes no module freeform;
@@ -170,10 +173,16 @@ let
   HSA_AMD = no;
   DRM_RADEON = no;
 }
-# TTM is only selectable thanks to the ttm patch; nouveau selects it too
-// lib.optionalAttrs (!amdgpu && !nouveau) {
+# TTM is only selectable thanks to the ttm patch, and only once nothing selects it
+// lib.optionalAttrs (!ttm) {
   DRM_TTM = no;
   DRM_TTM_HELPER = no;
+  DRM_I915 = no;
+  DRM_XE = no;
+  DRM_QXL = no;
+  DRM_VMWGFX = no;
+  DRM_VBOXVIDEO = no;
+  DRM_HISI_HIBMC = no;
 }
 // extraConfig;
 in
