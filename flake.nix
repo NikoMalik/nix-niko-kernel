@@ -40,6 +40,18 @@
 
       mkPackages = kernel: llvm.kernelModuleLLVMOverride (pkgs.linuxPackagesFor kernel);
 
+      # unstable buildLinux puts modules in a separate `modules` output; stable NixOS
+      # (25.05) still looks in `kernel/lib/modules`, so point it there explicitly
+      mkModule =
+        kernel:
+        { config, lib, ... }:
+        {
+          boot.kernelPackages = mkPackages kernel;
+          system.modulesTree = lib.mkForce (
+            [ (lib.getOutput "modules" config.boot.kernelPackages.kernel) ] ++ config.boot.extraModulePackages
+          );
+        };
+
       niko-kernel = mkKernel profiles.desktop;
       niko-kernel-noamdgpu = mkKernel { amdgpu = false; };
       niko-kernel-server = mkKernel profiles.server;
@@ -70,17 +82,8 @@
         };
       };
 
-      nixosModules.default =
-        { ... }:
-        {
-          boot.kernelPackages = mkPackages niko-kernel;
-        };
-
-      nixosModules.server =
-        { ... }:
-        {
-          boot.kernelPackages = mkPackages niko-kernel-server;
-        };
+      nixosModules.default = mkModule niko-kernel;
+      nixosModules.server = mkModule niko-kernel-server;
 
       overlays.default = _final: _prev: {
         niko-kernel = niko-kernel;
