@@ -1,3 +1,5 @@
+{ preemptNone ? false }:
+
 [
   { name = "7.2.10-bore"; patch = ./patches/7.2.10-bore.patch; }
   { name = "7.2.10-bore_fix_climb"; patch = ./patches/7.2.10-bore_fix_climb.patch; }
@@ -78,3 +80,6 @@
   { name = "7.2.10-usbhid_skip"; patch = ./patches/7.2.10-usbhid_skip.patch; }
   { name = "7.2.10-small_tasks"; patch = ./patches/7.2.10-small_tasks.patch; }
 ]
+++ (if preemptNone then [
+  { name = "7.2.10-preempt_none"; patch = ./patches/7.2.10-preempt_none.patch; }
+] else [ ])

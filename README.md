@@ -2,13 +2,13 @@
 
 CachyOS 7.2 bore kernel, packaged for NixOS. amdgpu is on by default; the TTM
 patch makes `DRM_TTM`/`DRM_TTM_HELPER` selectable so they can be forced off
-together with amdgpu in the `-noamdgpu` variant.
+with `ttm = false`.
 
 ## Layout
 
 - `flake.nix` — outputs the kernel package, `linuxPackages-niko`, a NixOS module and an overlay
 - `kernel.nix` — the `buildLinux` derivation, pulls the pre-sauced CachyOS source tarball
-- `config.nix` — kernel config as `structuredExtraConfig` (bore, O3, BBR, full tick/preempt, amdgpu off)
+- `config.nix` — kernel config as `structuredExtraConfig`, parametrized (bore, hz, preempt, nohz, amdgpu, nouveau, …)
 
 ## Versions and hashes
 
@@ -52,6 +52,29 @@ compile), use the `-noamdgpu` variant:
 nix build .#niko-kernel-noamdgpu
 ```
 or `mkKernel { amdgpu = false; }`.
+
+## server
+
+`niko-kernel-server` / `linuxPackages-niko-server` / `nixosModules.server`:
+no bore (`SCHED_BORE=n`, the patch stays — `comptime_ttwu` is built on top of it),
+`CACHY=n`, `HZ=300`, `PREEMPT_NONE` (static, no `PREEMPT_DYNAMIC`), `NO_HZ_IDLE`
+instead of `NO_HZ_FULL` + context tracking, no amdgpu, no nouveau.
+
+7.2 hides `PREEMPT_NONE` on x86 (`depends on ARCH_NO_PREEMPT`);
+`7.2.10-preempt_none.patch` drops that and is only applied when `preempt = "none"`.
+
+Every knob is a `config.nix` parameter, defaults = desktop:
+`amdgpu nouveau ttm polly bore cachy native hz preempt preemptDynamic nohzFull extraConfig`.
+```nix
+boot.kernelPackages = niko-kernel.lib.mkPackages (niko-kernel.lib.mkKernel (
+  niko-kernel.lib.profiles.server // { hz = 250; native = false; extraConfig = { KVM = lib.kernel.module; }; }
+));
+```
+`native = false` -> `GENERIC_CPU`, needed when the build host CPU differs from the server's.
+`ttm = false` (needs `amdgpu`/`nouveau` off) also drops i915, xe, qxl, vmwgfx,
+vboxvideo and hibmc — all of them select TTM, so it can't go while any is left.
+Every option answered `n` is also unset in the defconfig before `make config`,
+otherwise e.g. `DRM_TTM=n` is rejected: it is asked before the drivers that select it.
 
 ## polly
 
