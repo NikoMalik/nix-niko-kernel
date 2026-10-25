@@ -70,9 +70,9 @@
   { name = "7.2.10-lower_upper"; patch = ./patches/7.2.10-lower_upper.patch; }
   { name = "7.2.10-shaves_prefill"; patch = ./patches/7.2.10-shaves_prefill.patch; }
   { name = "7.2.10-shaves_barns"; patch = ./patches/7.2.10-shaves_barns.patch; }
-  { name = "7.2.10-folio_page_cache"; patch = ./patches/7.2.10-folio_page_cache.patch; }
-  { name = "7.2.10-folio_page_cache2"; patch = ./patches/7.2.10-folio_page_cache2.patch; }
-  { name = "7.2.10-folio_page_cache_fix_after_2"; patch = ./patches/7.2.10-folio_page_cache_fix_after_2.patch; }
+  # { name = "7.2.10-folio_page_cache"; patch = ./patches/7.2.10-folio_page_cache.patch; }
+  # { name = "7.2.10-folio_page_cache2"; patch = ./patches/7.2.10-folio_page_cache2.patch; }
+  # { name = "7.2.10-folio_page_cache_fix_after_2"; patch = ./patches/7.2.10-folio_page_cache_fix_after_2.patch; }
   { name = "7.2.10-branchless_bsearch"; patch = ./patches/7.2.10-branchless_bsearch.patch; }
   { name = "7.2.10-le9uo"; patch = ./patches/7.2.10-le9uo.patch; }
   { name = "7.2.10-tick_nohz"; patch = ./patches/7.2.10-tick_nohz.patch; }
