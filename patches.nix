@@ -79,6 +79,8 @@
   { name = "7.2.10-ata"; patch = ./patches/7.2.10-ata.patch; }
   { name = "7.2.10-usbhid_skip"; patch = ./patches/7.2.10-usbhid_skip.patch; }
   { name = "7.2.10-small_tasks"; patch = ./patches/7.2.10-small_tasks.patch; }
+  { name = "7.2.10-btrfs"; patch = ./patches/7.2.10-btrfs.patch; }
+
 ]
 ++ (if preemptNone then [
   { name = "7.2.10-preempt_none"; patch = ./patches/7.2.10-preempt_none.patch; }

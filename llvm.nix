@@ -46,14 +46,14 @@ rec {
 
       stdenv' = pkgs.overrideCC hostLLVM.stdenv hostLLVM.clangUseLLVM;
     in
-    pkgs.impureUseNativeOptimizations (stdenv'.override (old: {
+    stdenv'.override (old: {
       hostPlatform = mkLLVMPlatform stdenv'.hostPlatform;
       buildPlatform = mkLLVMPlatform stdenv'.buildPlatform;
       extraNativeBuildInputs = [
         hostLLVM.lld
         pkgs.patchelf
       ];
-    }));
+    });
 
   kernelModuleLLVMOverride =
     kernelPackages_:

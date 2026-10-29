@@ -15,7 +15,7 @@
 
       llvm = import ./llvm.nix { inherit pkgs lib; };
 
-      # any config.nix parameter: amdgpu nouveau polly bore cachy native hz preempt preemptDynamic nohzFull extraConfig
+      # any config.nix parameter: amdgpu nouveau polly bore cachy native x86Level hz preempt preemptDynamic nohzFull extraConfig
       profiles = {
         desktop = { };
         server = {
@@ -34,7 +34,9 @@
         pkgs.callPackage ./kernel.nix {
           inherit argsOverride;
           kconfig = removeAttrs kconfig [ "argsOverride" ];
-          inherit (llvm) stdenvLLVM ltoMakeflags;
+          inherit (llvm) ltoMakeflags;
+          stdenvLLVM =
+            if kconfig.native or true then pkgs.impureUseNativeOptimizations llvm.stdenvLLVM else llvm.stdenvLLVM;
           kernelPatches = import ./patches.nix { preemptNone = (kconfig.preempt or "full") == "none"; };
         };
 

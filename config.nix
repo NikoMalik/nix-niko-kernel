@@ -8,6 +8,7 @@
   bore ? true,
   cachy ? true,
   native ? true,
+  x86Level ? 1,
   hz ? 1000,
   # "full" | "lazy" | "none"
   preempt ? "full",
@@ -19,6 +20,7 @@
 # 7.2 only allows preempt=none as a static model (see 7.2.10-preempt_none.patch)
 assert preempt == "none" -> !preemptDynamic;
 assert !ttm -> !amdgpu && !nouveau;
+assert lib.elem x86Level [ 1 2 3 4 ];
 
 let
   inherit (lib.kernel) yes no module freeform;
@@ -158,6 +160,9 @@ let
   CONTEXT_TRACKING_FORCE = no;
   NO_HZ_FULL_NODEF = yes;
   CONTEXT_TRACKING = yes;
+}
+// lib.optionalAttrs (!native) {
+  X86_64_VERSION = freeform (toString x86Level);
 }
 // lib.optionalAttrs polly {
   POLLY_CLANG = yes;
