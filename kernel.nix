@@ -16,9 +16,9 @@
 }:
 
 let
-  version = "7.2.10";
-  cachyRel = "cachyos-${version}-1";
-  configCommit = "5a14cc870dbe958da0fe3fff96d0df6561b8b064";
+  version = "7.3.1";
+  cachyRel = "cachyos-7.3.1-1";
+  configCommit = "cbd3c2573e7281c006e8f4dbf4e2dd781542d7f7";
 
   # `make config` asks e.g. DRM_TTM before the drivers that select it, so an `n`
   # answer is rejected while the defconfig still has them =m. Unset every `n` upfront.
@@ -28,7 +28,7 @@ let
 
   cachyConfig = fetchurl {
     url = "https://raw.githubusercontent.com/CachyOS/linux-cachyos/${configCommit}/linux-cachyos-bore/config";
-    hash = "sha256-PfMxEuM1f+tqiZu/wAby3tFSJtGy63QayYbVgbnKd3M=";
+    hash = "sha256-gftW/jJmEqDcRwX8XsMJ0EvP/7SH2wy1hDkY/pKVGSc=";
   };
 in
 buildLinux (
@@ -41,7 +41,7 @@ buildLinux (
       name = "niko-kernel-${version}-src";
       src = fetchurl {
         url = "https://github.com/CachyOS/linux/releases/download/${cachyRel}/${cachyRel}.tar.gz";
-        hash = "sha256-Aq+KYRVZbSDpmYkmlT8gQPjX9myhEi85nFkgqWAfHO8=";
+        hash = "sha256-Pbopqo59zaQ67miY5MZt+/2ZfrXZAlELD66sxpbd+z8=";
       };
       postPatch = ''
         cp ${cachyConfig} arch/x86/configs/niko_defconfig

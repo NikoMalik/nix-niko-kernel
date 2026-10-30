@@ -11,10 +11,11 @@ diff --git a/lib/kstrtox.c b/lib/kstrtox.c
 index edc4eb7c1..436192041 100644
 --- a/lib/kstrtox.c
 +++ b/lib/kstrtox.c
-@@ -17,7 +17,9 @@
+@@ -17,8 +17,10 @@
  #include <linux/export.h>
  #include <linux/kstrtox.h>
  #include <linux/math64.h>
+ #include <linux/overflow.h>
 +#include <linux/string.h>
  #include <linux/types.h>
 +#include <linux/unaligned.h>

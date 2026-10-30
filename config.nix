@@ -17,7 +17,7 @@
   extraConfig ? { },
 }:
 
-# 7.2 only allows preempt=none as a static model (see 7.2.10-preempt_none.patch)
+# 7.x only allows preempt=none as a static model (see 7.2.10-preempt_none.patch)
 assert preempt == "none" -> !preemptDynamic;
 assert !ttm -> !amdgpu && !nouveau;
 assert lib.elem x86Level [ 1 2 3 4 ];

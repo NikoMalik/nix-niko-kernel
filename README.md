@@ -1,6 +1,6 @@
 # niko-kernel (NixOS)
 
-CachyOS 7.2 bore kernel, packaged for NixOS. amdgpu is on by default; the TTM
+CachyOS 7.3 bore kernel, packaged for NixOS. amdgpu is on by default; the TTM
 patch makes `DRM_TTM`/`DRM_TTM_HELPER` selectable so they can be forced off
 with `ttm = false`.
 
@@ -13,13 +13,29 @@ with `ttm = false`.
 ## Versions and hashes
 
 `kernel.nix` pins two fetches, both with real hashes already filled:
-- the CachyOS source tarball `cachyos-7.2.10-1.tar.gz`;
+- the CachyOS source tarball `cachyos-7.3.1-1.tar.gz`;
 - the base config `linux-cachyos-bore/config` at `configCommit`, dropped into
   `arch/x86/configs/niko_defconfig` — `structuredExtraConfig` (`config.nix`) layers on top.
 
 When bumping `version` / `configCommit`, set the matching `hash` back to
 `lib.fakeHash`, run `nix build .#niko-kernel`, and paste the real hash from the
 `got: sha256-...` error (or `nix store prefetch-file <url>`).
+
+## 7.3.1 port notes
+
+The 7.2.10 patch stack was ported onto the `cachyos-7.3.1-1` base (7.3.1
+carries the critical 7.2.14 fixes: KEYS KASLR/UAF series, io_uring
+refcount/UAF, L2CAP double-add, place_entity overflow):
+
+- regenerated for 7.3.1: `bore` (incl. a new guard for
+  `update_protect_slice()`), `kcompressed` (swap writeout moved to
+  `swap_io_ctx` API), `rss-stat-optimization` (rmap.c refactored into
+  `ttu_anon_*` helpers), `speedup_compile`, `fast_parse_uint`, `small_tasks`,
+  `dead_code` (dropped the obsolete `.smp_locks` hunk — section removed
+  upstream);
+- dropped as upstreamed in 7.3.1: `pci_skip` (psi.c `delta <= 0`),
+  `shaves_prefill` (slub `sheaf_partial`) — entries commented out in
+  `patches.nix`.
 
 ## Use in NixOS
 
@@ -60,7 +76,7 @@ no bore (`SCHED_BORE=n`, the patch stays — `comptime_ttwu` is built on top of 
 `CACHY=n`, `HZ=300`, `PREEMPT_NONE` (static, no `PREEMPT_DYNAMIC`), `NO_HZ_IDLE`
 instead of `NO_HZ_FULL` + context tracking, no amdgpu, no nouveau.
 
-7.2 hides `PREEMPT_NONE` on x86 (`depends on ARCH_NO_PREEMPT`);
+7.x hides `PREEMPT_NONE` on x86 (`depends on ARCH_NO_PREEMPT`);
 `7.2.10-preempt_none.patch` drops that and is only applied when `preempt = "none"`.
 
 Every knob is a `config.nix` parameter, defaults = desktop:

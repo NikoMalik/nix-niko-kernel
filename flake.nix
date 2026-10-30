@@ -1,5 +1,5 @@
 {
-  description = "niko-kernel: CachyOS 7.2 bore base for NixOS, clang+thinLTO, amdgpu optional";
+  description = "niko-kernel: CachyOS 7.3 bore base for NixOS, clang+thinLTO, amdgpu optional";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 

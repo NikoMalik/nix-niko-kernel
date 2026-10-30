@@ -64,11 +64,13 @@
   { name = "7.2.10-sched-shares-lto-fix"; patch = ./patches/7.2.10-sched-shares-lto-fix.patch; }
   { name = "7.2.10-def_string"; patch = ./patches/7.2.10-def_string.patch; }
   { name = "7.2.10-speedup_compile"; patch = ./patches/7.2.10-speedup_compile.patch; }
-  { name = "7.2.10-pci_skip"; patch = ./patches/7.2.10-pci_skip.patch; }
+  # upstreamed in 7.3.1 (psi.c: delta <= 0):
+  # { name = "7.2.10-pci_skip"; patch = ./patches/7.2.10-pci_skip.patch; }
   { name = "7.2.10-fast_parse_uint"; patch = ./patches/7.2.10-fast_parse_uint.patch; }
   { name = "7.2.10-fast_parse_uint2"; patch = ./patches/7.2.10-fast_parse_uint2.patch; }
   { name = "7.2.10-lower_upper"; patch = ./patches/7.2.10-lower_upper.patch; }
-  { name = "7.2.10-shaves_prefill"; patch = ./patches/7.2.10-shaves_prefill.patch; }
+  # upstreamed in 7.3.1 (mm/slub.c: sheaf_partial):
+  # { name = "7.2.10-shaves_prefill"; patch = ./patches/7.2.10-shaves_prefill.patch; }
   { name = "7.2.10-shaves_barns"; patch = ./patches/7.2.10-shaves_barns.patch; }
   # { name = "7.2.10-folio_page_cache"; patch = ./patches/7.2.10-folio_page_cache.patch; }
   # { name = "7.2.10-folio_page_cache2"; patch = ./patches/7.2.10-folio_page_cache2.patch; }
