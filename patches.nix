@@ -85,6 +85,7 @@
   { name = "7.2.10-memblock_bsearch"; patch = ./patches/7.2.10-memblock_bsearch.patch; }
   { name = "7.2.10-btrfs_fsync"; patch = ./patches/7.2.10-btrfs_fsync.patch; }
   { name = "7.2.10-amd_race"; patch = ./patches/7.2.10-amd_race.patch; }
+  { name = "7.2.10-cambyses"; patch = ./patches/7.2.10-cambyses.patch; }
 
 ]
 ++ (if preemptNone then [
