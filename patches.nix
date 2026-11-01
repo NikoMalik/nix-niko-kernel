@@ -86,6 +86,13 @@
   { name = "7.2.10-btrfs_fsync"; patch = ./patches/7.2.10-btrfs_fsync.patch; }
   { name = "7.2.10-amd_race"; patch = ./patches/7.2.10-amd_race.patch; }
   { name = "7.2.10-cambyses"; patch = ./patches/7.2.10-cambyses.patch; }
+  { name = "7.2.10-btrfs_space_info"; patch = ./patches/7.2.10-btrfs_space_info.patch; }
+  { name = "7.2.10-bugfix_blk"; patch = ./patches/7.2.10-bugfix_blk.patch; }
+  { name = "7.2.10-block_sync"; patch = ./patches/7.2.10-block_sync.patch; }
+  { name = "7.2.10-ext4_cache"; patch = ./patches/7.2.10-ext4_cache.patch; }
+  { name = "7.2.10-large_folio"; patch = ./patches/7.2.10-large_folio.patch; }
+  { name = "7.2.10-net_eventpoll"; patch = ./patches/7.2.10-net_eventpoll.patch; }
+  { name = "7.2.10-block_direct"; patch = ./patches/7.2.10-block_direct.patch; }
 
 ]
 ++ (if preemptNone then [
