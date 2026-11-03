@@ -93,6 +93,8 @@
   { name = "7.2.10-large_folio"; patch = ./patches/7.2.10-large_folio.patch; }
   { name = "7.2.10-net_eventpoll"; patch = ./patches/7.2.10-net_eventpoll.patch; }
   { name = "7.2.10-block_direct"; patch = ./patches/7.2.10-block_direct.patch; }
+  { name = "7.2.10-strlen"; patch = ./patches/7.2.10-strlen.patch; }
+  { name = "7.2.10-strln"; patch = ./patches/7.2.10-strln.patch; }
 
 ]
 ++ (if preemptNone then [
