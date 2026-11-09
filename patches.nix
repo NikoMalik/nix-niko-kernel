@@ -75,6 +75,7 @@
   # { name = "7.2.10-folio_page_cache_fix_after_2"; patch = ./patches/7.2.10-folio_page_cache_fix_after_2.patch; }
   { name = "7.2.10-branchless_bsearch"; patch = ./patches/7.2.10-branchless_bsearch.patch; }
   { name = "7.2.10-le9uo"; patch = ./patches/7.2.10-le9uo.patch; }
+  { name = "7.2.10-le9uo-profile"; patch = ./patches/7.2.10-le9uo-profile.patch; }
   { name = "7.2.10-tick_nohz"; patch = ./patches/7.2.10-tick_nohz.patch; }
   { name = "7.2.10-ata"; patch = ./patches/7.2.10-ata.patch; }
   { name = "7.2.10-usbhid_skip"; patch = ./patches/7.2.10-usbhid_skip.patch; }
@@ -95,6 +96,8 @@
   { name = "7.2.10-block_direct"; patch = ./patches/7.2.10-block_direct.patch; }
   { name = "7.2.10-strlen"; patch = ./patches/7.2.10-strlen.patch; }
   { name = "7.2.10-strln"; patch = ./patches/7.2.10-strln.patch; }
+  { name = "7.2.10-lz4kdr"; patch = ./patches/7.2.10-lz4kdr.patch; }
+  { name = "7.2.10-reswappiness"; patch = ./patches/7.2.10-reswappiness.patch; }
 
 ]
 ++ (if preemptNone then [

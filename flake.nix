@@ -19,6 +19,7 @@
       profiles = {
         desktop = { };
         server = {
+          server = true;
           bore = false;
           cachy = false;
           hz = 300;
@@ -86,6 +87,7 @@
 
       nixosModules.default = mkModule niko-kernel;
       nixosModules.server = mkModule niko-kernel-server;
+      nixosModules.zram = import ./zram.nix;
 
       overlays.default = _final: _prev: {
         niko-kernel = niko-kernel;

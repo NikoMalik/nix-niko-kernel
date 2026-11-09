@@ -7,6 +7,8 @@
   polly ? false,
   bore ? true,
   cachy ? true,
+  # false (desktop) protects the anon working set, true (server) leaves le9uo to the admin
+  server ? false,
   native ? true,
   x86Level ? 1,
   hz ? 1000,
@@ -68,6 +70,9 @@ let
 
   LRU_GEN = yes;
   LRU_GEN_ENABLED = yes;
+
+  LE9UO_PROFILE_ANON = if server then no else yes;
+  LE9UO_PROFILE_CUSTOM = if server then yes else no;
 
   EXPERT = yes;
   SCHED_CLUSTER = yes;
