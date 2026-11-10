@@ -98,6 +98,7 @@
   { name = "7.2.10-strln"; patch = ./patches/7.2.10-strln.patch; }
   { name = "7.2.10-lz4kdr"; patch = ./patches/7.2.10-lz4kdr.patch; }
   { name = "7.2.10-reswappiness"; patch = ./patches/7.2.10-reswappiness.patch; }
+  { name = "7.2.10-more-inline"; patch = ./patches/7.2.10-more-inline.patch.patch; }
 
 ]
 ++ (if preemptNone then [
