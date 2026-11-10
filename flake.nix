@@ -49,7 +49,7 @@
         kernel:
         { config, lib, ... }:
         {
-          imports = [ ./iosched.nix ];
+          imports = [ ./udev.nix ];
           boot.kernelPackages = mkPackages kernel;
           system.modulesTree = lib.mkForce (
             [ (lib.getOutput "modules" config.boot.kernelPackages.kernel) ] ++ config.boot.extraModulePackages
@@ -89,7 +89,7 @@
       nixosModules.default = mkModule niko-kernel;
       nixosModules.server = mkModule niko-kernel-server;
       nixosModules.zram = import ./zram.nix;
-      nixosModules.iosched = import ./iosched.nix;
+      nixosModules.udev = import ./udev.nix;
 
       overlays.default = _final: _prev: {
         niko-kernel = niko-kernel;
