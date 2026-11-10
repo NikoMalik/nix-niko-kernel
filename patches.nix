@@ -97,7 +97,10 @@
   { name = "7.2.10-strlen"; patch = ./patches/7.2.10-strlen.patch; }
   { name = "7.2.10-strln"; patch = ./patches/7.2.10-strln.patch; }
   { name = "7.2.10-lz4kdr"; patch = ./patches/7.2.10-lz4kdr.patch; }
+  { name = "7.2.10-zram-7.3"; patch = ./patches/7.2.10-zram-7.3.patch; }
   { name = "7.2.10-reswappiness"; patch = ./patches/7.2.10-reswappiness.patch; }
+  { name = "7.2.10-vmd-mtl016"; patch = ./patches/7.2.10-vmd-mtl016.patch; }
+  { name = "7.2.10-btrfs-compr-pool"; patch = ./patches/7.2.10-btrfs-compr-pool.patch; }
   { name = "7.2.10-more-inline"; patch = ./patches/7.2.10-more-inline.patch; }
 
 ]
