@@ -62,6 +62,7 @@ let
   TCP_CONG_CUBIC = module;
   DEFAULT_CUBIC = no;
   TCP_CONG_BBR = yes;
+  DEFAULT_BBR = yes;
   DEFAULT_TCP_CONG = freeform "bbr";
   NET_SCH_FQ_CODEL = module;
   NET_SCH_FQ = yes;
