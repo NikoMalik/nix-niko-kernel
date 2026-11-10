@@ -102,6 +102,11 @@
   { name = "7.2.10-vmd-mtl016"; patch = ./patches/7.2.10-vmd-mtl016.patch; }
   { name = "7.2.10-btrfs-compr-pool"; patch = ./patches/7.2.10-btrfs-compr-pool.patch; }
   { name = "7.2.10-more-inline"; patch = ./patches/7.2.10-more-inline.patch; }
+  { name = "7.2.10-poc-sticky"; patch = ./patches/7.2.10-poc-sticky.patch; }
+  { name = "7.2.10-cambyses-0.7"; patch = ./patches/7.2.10-cambyses-0.7.patch; }
+  { name = "7.2.10-bore-7.0.1"; patch = ./patches/7.2.10-bore-7.0.1.patch; }
+  { name = "7.2.10-poc-3.0"; patch = ./patches/7.2.10-poc-3.0.patch; }
+  { name = "7.2.10-mglru-min-ttl-order"; patch = ./patches/7.2.10-mglru-min-ttl-order.patch; }
 
 ]
 ++ (if preemptNone then [
