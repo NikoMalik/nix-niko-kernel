@@ -115,6 +115,7 @@
   { name = "7.2.10-small-tasks-fixes"; patch = ./patches/7.2.10-small-tasks-fixes.patch; }
   { name = "7.2.10-nap-rating"; patch = ./patches/7.2.10-nap-rating.patch; }
   { name = "7.2.10-memset-erms"; patch = ./patches/7.2.10-memset-erms.patch; }
+  { name = "7.2.10-lto-thresholds"; patch = ./patches/7.2.10-lto-thresholds.patch; }
 
 ]
 ++ (if preemptNone then [

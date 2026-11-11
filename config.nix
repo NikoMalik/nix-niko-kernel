@@ -82,6 +82,8 @@ let
   SCHED_CLUSTER = yes;
   SCHED_SMT = yes;
   USER_NS = yes;
+  # wine and proton sync, built in on desktop so perf sees its functions
+  NTSYNC = if server then no else yes;
   NET_RX_BUSY_POLL = yes;
   BUSY_POLL = yes;
   PER_VMA_LOCK = yes;
