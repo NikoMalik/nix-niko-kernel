@@ -107,6 +107,9 @@
   { name = "7.2.10-bore-7.0.1"; patch = ./patches/7.2.10-bore-7.0.1.patch; }
   { name = "7.2.10-poc-3.0"; patch = ./patches/7.2.10-poc-3.0.patch; }
   { name = "7.2.10-mglru-min-ttl-order"; patch = ./patches/7.2.10-mglru-min-ttl-order.patch; }
+  { name = "7.2.10-polly-lto"; patch = ./patches/7.2.10-polly-lto.patch; }
+  { name = "7.2.10-lto-o3"; patch = ./patches/7.2.10-lto-o3.patch; }
+  { name = "7.2.10-lto-mem"; patch = ./patches/7.2.10-lto-mem.patch; }
 
 ]
 ++ (if preemptNone then [
