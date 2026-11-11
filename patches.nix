@@ -110,6 +110,10 @@
   { name = "7.2.10-polly-lto"; patch = ./patches/7.2.10-polly-lto.patch; }
   { name = "7.2.10-lto-o3"; patch = ./patches/7.2.10-lto-o3.patch; }
   { name = "7.2.10-lto-mem"; patch = ./patches/7.2.10-lto-mem.patch; }
+  { name = "7.2.10-decay-lag-order"; patch = ./patches/7.2.10-decay-lag-order.patch; }
+  { name = "7.2.10-teo-default"; patch = ./patches/7.2.10-teo-default.patch; }
+  { name = "7.2.10-small-tasks-fixes"; patch = ./patches/7.2.10-small-tasks-fixes.patch; }
+  { name = "7.2.10-nap-rating"; patch = ./patches/7.2.10-nap-rating.patch; }
 
 ]
 ++ (if preemptNone then [
