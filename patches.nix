@@ -114,6 +114,7 @@
   { name = "7.2.10-teo-default"; patch = ./patches/7.2.10-teo-default.patch; }
   { name = "7.2.10-small-tasks-fixes"; patch = ./patches/7.2.10-small-tasks-fixes.patch; }
   { name = "7.2.10-nap-rating"; patch = ./patches/7.2.10-nap-rating.patch; }
+  { name = "7.2.10-memset-erms"; patch = ./patches/7.2.10-memset-erms.patch; }
 
 ]
 ++ (if preemptNone then [
