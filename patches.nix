@@ -116,6 +116,8 @@
   { name = "7.2.10-nap-rating"; patch = ./patches/7.2.10-nap-rating.patch; }
   { name = "7.2.10-memset-erms"; patch = ./patches/7.2.10-memset-erms.patch; }
   { name = "7.2.10-lto-thresholds"; patch = ./patches/7.2.10-lto-thresholds.patch; }
+  { name = "7.2.10-ntsync-wait-lock"; patch = ./patches/7.2.10-ntsync-wait-lock.patch; }
+  { name = "7.2.10-ntsync-waker-unqueue"; patch = ./patches/7.2.10-ntsync-waker-unqueue.patch; }
 
 ]
 ++ (if preemptNone then [
