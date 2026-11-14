@@ -118,6 +118,10 @@
   { name = "7.2.10-lto-thresholds"; patch = ./patches/7.2.10-lto-thresholds.patch; }
   { name = "7.2.10-ntsync-wait-lock"; patch = ./patches/7.2.10-ntsync-wait-lock.patch; }
   { name = "7.2.10-ntsync-waker-unqueue"; patch = ./patches/7.2.10-ntsync-waker-unqueue.patch; }
+  { name = "7.2.10-ntsync-wake-q"; patch = ./patches/7.2.10-ntsync-wake-q.patch; }
+  { name = "7.2.10-mglru-kswapd-wake-order"; patch = ./patches/7.2.10-mglru-kswapd-wake-order.patch; }
+  { name = "7.2.10-poc-pending-read"; patch = ./patches/7.2.10-poc-pending-read.patch; }
+  { name = "7.2.10-tg-cpus-cache"; patch = ./patches/7.2.10-tg-cpus-cache.patch; }
 
 ]
 ++ (if preemptNone then [
