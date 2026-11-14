@@ -122,6 +122,7 @@
   { name = "7.2.10-mglru-kswapd-wake-order"; patch = ./patches/7.2.10-mglru-kswapd-wake-order.patch; }
   { name = "7.2.10-poc-pending-read"; patch = ./patches/7.2.10-poc-pending-read.patch; }
   { name = "7.2.10-tg-cpus-cache"; patch = ./patches/7.2.10-tg-cpus-cache.patch; }
+  { name = "7.2.10-lz4kdr-bounds"; patch = ./patches/7.2.10-lz4kdr-bounds.patch; }
 
 ]
 ++ (if preemptNone then [
