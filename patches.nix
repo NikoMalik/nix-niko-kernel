@@ -44,7 +44,6 @@
   { name = "6.18.1-epb"; patch = ./patches/6.18.1-epb.patch; }
   { name = "6.18.1-crypto-late"; patch = ./patches/6.18.1-crypto-late.patch; }
   { name = "6.18.1-memcontrol"; patch = ./patches/6.18.1-memcontrol.patch; }
-  { name = "6.18.1-better_idle"; patch = ./patches/6.18.1-better_idle.patch; }
   { name = "6.18.1-lto-size"; patch = ./patches/6.18.1-lto-size.patch; }
   { name = "6.18.1-harder_clang"; patch = ./patches/6.18.1-harder_clang.patch; }
   { name = "6.18.1-mharden_none"; patch = ./patches/6.18.1-mharden_none.patch; }
@@ -123,14 +122,10 @@
   { name = "7.2.10-poc-pending-read"; patch = ./patches/7.2.10-poc-pending-read.patch; }
   { name = "7.2.10-tg-cpus-cache"; patch = ./patches/7.2.10-tg-cpus-cache.patch; }
   { name = "7.2.10-lz4kdr-bounds"; patch = ./patches/7.2.10-lz4kdr-bounds.patch; }
-  { name = "7.2.10-rwsem-nopause"; patch = ./patches/7.2.10-rwsem-nopause.patch; }
   { name = "7.2.10-defrag-mode-default"; patch = ./patches/7.2.10-defrag-mode-default.patch; }
   { name = "7.2.10-pcp-prefetch"; patch = ./patches/7.2.10-pcp-prefetch.patch; }
-  { name = "7.2.10-better-idle-fix"; patch = ./patches/7.2.10-better-idle-fix.patch; }
-  { name = "7.2.10-rwsem-nopause-default"; patch = ./patches/7.2.10-rwsem-nopause-default.patch; }
   { name = "7.2.10-crash-kexec-noinline"; patch = ./patches/7.2.10-crash-kexec-noinline.patch; }
   { name = "7.2.10-lz4kdr-decode-fast"; patch = ./patches/7.2.10-lz4kdr-decode-fast.patch; }
-  { name = "7.2.10-newidle-half-switch"; patch = ./patches/7.2.10-newidle-half-switch.patch; }
   { name = "7.2.10-lz4kdr-match-peel"; patch = ./patches/7.2.10-lz4kdr-match-peel.patch; }
 
 ]
