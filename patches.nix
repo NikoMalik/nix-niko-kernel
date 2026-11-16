@@ -128,6 +128,7 @@
   { name = "7.2.10-pcp-prefetch"; patch = ./patches/7.2.10-pcp-prefetch.patch; }
   { name = "7.2.10-better-idle-fix"; patch = ./patches/7.2.10-better-idle-fix.patch; }
   { name = "7.2.10-rwsem-nopause-default"; patch = ./patches/7.2.10-rwsem-nopause-default.patch; }
+  { name = "7.2.10-crash-kexec-noinline"; patch = ./patches/7.2.10-crash-kexec-noinline.patch; }
 
 ]
 ++ (if preemptNone then [
