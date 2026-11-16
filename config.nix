@@ -10,6 +10,9 @@
   # false (desktop) protects the anon working set, true (server) leaves le9uo to the admin
   server ? false,
   native ? true,
+  # false for CPUs without CET IBT (before Tiger Lake / Zen 3), drops endbr64 from every function
+  # null: with native, kernel.nix turns it off when the build machine's CPU has no IBT
+  ibt ? null,
   x86Level ? 1,
   hz ? 1000,
   # "full" | "lazy" | "none"
@@ -38,6 +41,7 @@ let
 
   X86_NATIVE_CPU = if native then yes else no;
   GENERIC_CPU = if native then no else yes;
+  X86_KERNEL_IBT = if ibt == false then no else yes;
 
   HZ = freeform (toString hz);
 
@@ -77,6 +81,10 @@ let
 
   LE9UO_PROFILE_ANON = if server then no else yes;
   LE9UO_PROFILE_CUSTOM = if server then yes else no;
+  # desktop boots with vm.defrag_mode=1 so thp faults rarely fall back to 4k
+  DEFRAG_MODE_DEFAULT = if server then no else yes;
+  # desktop skips zeroing every kernel allocation,nvidia needs NVreg_InitializeSystemMemoryAllocations=1
+  INIT_ON_ALLOC_DEFAULT_ON = if server then yes else no;
 
   EXPERT = yes;
   SCHED_CLUSTER = yes;

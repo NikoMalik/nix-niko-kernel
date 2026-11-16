@@ -123,6 +123,11 @@
   { name = "7.2.10-poc-pending-read"; patch = ./patches/7.2.10-poc-pending-read.patch; }
   { name = "7.2.10-tg-cpus-cache"; patch = ./patches/7.2.10-tg-cpus-cache.patch; }
   { name = "7.2.10-lz4kdr-bounds"; patch = ./patches/7.2.10-lz4kdr-bounds.patch; }
+  { name = "7.2.10-rwsem-nopause"; patch = ./patches/7.2.10-rwsem-nopause.patch; }
+  { name = "7.2.10-defrag-mode-default"; patch = ./patches/7.2.10-defrag-mode-default.patch; }
+  { name = "7.2.10-pcp-prefetch"; patch = ./patches/7.2.10-pcp-prefetch.patch; }
+  { name = "7.2.10-better-idle-fix"; patch = ./patches/7.2.10-better-idle-fix.patch; }
+  { name = "7.2.10-rwsem-nopause-default"; patch = ./patches/7.2.10-rwsem-nopause-default.patch; }
 
 ]
 ++ (if preemptNone then [

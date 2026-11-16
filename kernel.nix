@@ -30,8 +30,22 @@ let
     url = "https://raw.githubusercontent.com/CachyOS/linux-cachyos/${configCommit}/linux-cachyos-bore/config";
     hash = "sha256-PfMxEuM1f+tqiZu/wAby3tFSJtGy63QayYbVgbnKd3M=";
   };
+
+  autoIbt = (kconfig.native or true) && (kconfig.ibt or null) == null;
+
+  ibtOff = ''
+    if ! grep -qw ibt /proc/cpuinfo; then
+      echo "CPU has no CET IBT, disabling CONFIG_X86_KERNEL_IBT (-fcf-protection=none)"
+      if [ -L "$buildRoot/.config" ]; then
+        cp --remove-destination "$(readlink -f "$buildRoot/.config")" "$buildRoot/.config"
+      fi
+      chmod u+w "$buildRoot/.config"
+      scripts/config --file "$buildRoot/.config" -d X86_KERNEL_IBT
+      make "''${makeFlags[@]}" olddefconfig
+    fi
+  '';
 in
-buildLinux (
+(buildLinux (
   {
     inherit version;
     pname = "niko-kernel";
@@ -69,4 +83,4 @@ buildLinux (
     };
   }
   // argsOverride
-)
+)).overrideAttrs (old: lib.optionalAttrs autoIbt { postConfigure = (old.postConfigure or "") + ibtOff; })
