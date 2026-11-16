@@ -92,6 +92,9 @@ let
   USER_NS = yes;
   # 4 MiB kernel log so early boot oopses are still there when journald starts
   LOG_BUF_SHIFT = freeform "22";
+  # nixpkgs compresses every module with xz,zstd unpacks them faster at boot
+  MODULE_COMPRESS_XZ = no;
+  MODULE_COMPRESS_ZSTD = yes;
   # wine and proton sync, built in on desktop so perf sees its functions
   NTSYNC = if server then no else yes;
   NET_RX_BUSY_POLL = yes;

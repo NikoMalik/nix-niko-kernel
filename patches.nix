@@ -129,6 +129,9 @@
   { name = "7.2.10-better-idle-fix"; patch = ./patches/7.2.10-better-idle-fix.patch; }
   { name = "7.2.10-rwsem-nopause-default"; patch = ./patches/7.2.10-rwsem-nopause-default.patch; }
   { name = "7.2.10-crash-kexec-noinline"; patch = ./patches/7.2.10-crash-kexec-noinline.patch; }
+  { name = "7.2.10-lz4kdr-decode-fast"; patch = ./patches/7.2.10-lz4kdr-decode-fast.patch; }
+  { name = "7.2.10-newidle-half-switch"; patch = ./patches/7.2.10-newidle-half-switch.patch; }
+  { name = "7.2.10-lz4kdr-match-peel"; patch = ./patches/7.2.10-lz4kdr-match-peel.patch; }
 
 ]
 ++ (if preemptNone then [
