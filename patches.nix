@@ -127,6 +127,10 @@
   { name = "7.2.10-crash-kexec-noinline"; patch = ./patches/7.2.10-crash-kexec-noinline.patch; }
   { name = "7.2.10-lz4kdr-decode-fast"; patch = ./patches/7.2.10-lz4kdr-decode-fast.patch; }
   { name = "7.2.10-lz4kdr-match-peel"; patch = ./patches/7.2.10-lz4kdr-match-peel.patch; }
+  { name = "7.2.10-lz4kdr-fxhash"; patch = ./patches/7.2.10-lz4kdr-fxhash.patch; }
+  { name = "7.2.10-lz4kdr-no-match-insert"; patch = ./patches/7.2.10-lz4kdr-no-match-insert.patch; }
+  { name = "7.2.10-eevdf-vprot-reweight"; patch = ./patches/7.2.10-eevdf-vprot-reweight.patch; }
+  { name = "7.2.10-fair-switching-to-weight"; patch = ./patches/7.2.10-fair-switching-to-weight.patch; }
 
 ]
 ++ (if preemptNone then [

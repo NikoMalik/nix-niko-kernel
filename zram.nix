@@ -10,8 +10,12 @@
   systemd.services.zram-recompress = {
     description = "Recompress idle zram pages";
     unitConfig.ConditionPathExists = "/sys/block/zram0/recompress";
+    # the recompression runs inside the write() to /sys/block/zram0/recompress,
+    # so SCHED_IDLE on this process keeps zstd off cores anything else wants
     serviceConfig = {
       Type = "oneshot";
+      CPUSchedulingPolicy = "idle";
+      CPUWeight = "idle";
       Nice = 19;
       IOSchedulingClass = "idle";
     };
