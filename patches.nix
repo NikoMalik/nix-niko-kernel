@@ -131,6 +131,8 @@
   { name = "7.2.10-lz4kdr-no-match-insert"; patch = ./patches/7.2.10-lz4kdr-no-match-insert.patch; }
   { name = "7.2.10-eevdf-vprot-reweight"; patch = ./patches/7.2.10-eevdf-vprot-reweight.patch; }
   { name = "7.2.10-fair-switching-to-weight"; patch = ./patches/7.2.10-fair-switching-to-weight.patch; }
+  { name = "7.2.10-mglru-protected-aging"; patch = ./patches/7.2.10-mglru-protected-aging.patch; }
+  { name = "7.2.10-reflex-default-gov"; patch = ./patches/7.2.10-reflex-default-gov.patch; }
 
 ]
 ++ (if preemptNone then [

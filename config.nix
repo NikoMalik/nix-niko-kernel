@@ -83,6 +83,9 @@ let
   LE9UO_PROFILE_CUSTOM = if server then yes else no;
   # desktop boots with vm.defrag_mode=1 so thp faults rarely fall back to 4k
   DEFRAG_MODE_DEFAULT = if server then no else yes;
+  # desktop boots with the reflex governor
+  CPU_FREQ_DEFAULT_GOV_REFLEX = if server then no else yes;
+  CPU_FREQ_DEFAULT_GOV_SCHEDUTIL = if server then yes else no;
   # desktop skips zeroing every kernel allocation,nvidia needs NVreg_InitializeSystemMemoryAllocations=1
   INIT_ON_ALLOC_DEFAULT_ON = if server then yes else no;
 
