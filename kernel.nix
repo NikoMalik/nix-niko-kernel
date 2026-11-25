@@ -3,8 +3,8 @@
   buildLinux,
   fetchurl,
   applyPatches,
-  stdenvLLVM,
-  ltoMakeflags,
+  stdenv,
+  ltoMakeflagsFor,
   # everything config.nix takes: amdgpu, nouveau, polly, bore, cachy, native, hz, preempt, ...
   kconfig ? { },
   # passed explicitly: callPackage would fill it with pkgs.kernelPatches
@@ -63,8 +63,8 @@ in
       '';
     };
 
-    stdenv = stdenvLLVM;
-    extraMakeFlags = ltoMakeflags;
+    inherit stdenv;
+    extraMakeFlags = ltoMakeflagsFor (argsOverride.stdenv or stdenv).cc;
 
     defconfig = "niko_defconfig";
 

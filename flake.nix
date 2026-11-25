@@ -35,8 +35,8 @@
         pkgs.callPackage ./kernel.nix {
           inherit argsOverride;
           kconfig = removeAttrs kconfig [ "argsOverride" ];
-          inherit (llvm) ltoMakeflags;
-          stdenvLLVM =
+          inherit (llvm) ltoMakeflagsFor;
+          stdenv =
             if kconfig.native or true then pkgs.impureUseNativeOptimizations llvm.stdenvLLVM else llvm.stdenvLLVM;
           kernelPatches = import ./patches.nix { preemptNone = (kconfig.preempt or "full") == "none"; };
         };
