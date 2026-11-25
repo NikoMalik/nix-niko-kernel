@@ -11,9 +11,6 @@
         inherit system;
         config.allowUnfree = true;
       };
-      lib = pkgs.lib;
-
-      llvm = import ./llvm.nix { inherit pkgs lib; };
 
       # any config.nix parameter: amdgpu nouveau polly bore cachy native x86Level hz preempt preemptDynamic nohzFull extraConfig
       profiles = {
@@ -30,18 +27,27 @@
         };
       };
 
-      mkKernel =
-        { argsOverride ? { }, ... }@kconfig:
-        pkgs.callPackage ./kernel.nix {
-          inherit argsOverride;
-          kconfig = removeAttrs kconfig [ "argsOverride" ];
-          inherit (llvm) ltoMakeflagsFor;
-          stdenv =
-            if kconfig.native or true then pkgs.impureUseNativeOptimizations llvm.stdenvLLVM else llvm.stdenvLLVM;
-          kernelPatches = import ./patches.nix { preemptNone = (kconfig.preempt or "full") == "none"; };
+      buildersFor =
+        pkgs:
+        let
+          llvm = import ./llvm.nix { inherit pkgs; inherit (pkgs) lib; };
+        in
+        {
+          mkKernel =
+            { argsOverride ? { }, ... }@kconfig:
+            pkgs.callPackage ./kernel.nix {
+              inherit argsOverride;
+              kconfig = removeAttrs kconfig [ "argsOverride" ];
+              inherit (llvm) ltoMakeflagsFor;
+              stdenv =
+                if kconfig.native or true then pkgs.impureUseNativeOptimizations llvm.stdenvLLVM else llvm.stdenvLLVM;
+              kernelPatches = import ./patches.nix { preemptNone = (kconfig.preempt or "full") == "none"; };
+            };
+
+          mkPackages = kernel: llvm.kernelModuleLLVMOverride (pkgs.linuxPackagesFor kernel);
         };
 
-      mkPackages = kernel: llvm.kernelModuleLLVMOverride (pkgs.linuxPackagesFor kernel);
+      inherit (buildersFor pkgs) mkKernel mkPackages;
 
       # unstable buildLinux puts modules in a separate `modules` output; stable NixOS
       # (25.05) still looks in `kernel/lib/modules`, so point it there explicitly
@@ -91,11 +97,16 @@
       nixosModules.zram = import ./zram.nix;
       nixosModules.udev = import ./udev.nix;
 
-      overlays.default = _final: _prev: {
-        niko-kernel = niko-kernel;
-        linuxPackages-niko = mkPackages niko-kernel;
-        niko-kernel-server = niko-kernel-server;
-        linuxPackages-niko-server = mkPackages niko-kernel-server;
-      };
+      overlays.default =
+        final: _prev:
+        let
+          inherit (buildersFor final) mkKernel mkPackages;
+        in
+        {
+          niko-kernel = mkKernel profiles.desktop;
+          linuxPackages-niko = mkPackages final.niko-kernel;
+          niko-kernel-server = mkKernel profiles.server;
+          linuxPackages-niko-server = mkPackages final.niko-kernel-server;
+        };
     };
 }
