@@ -92,11 +92,10 @@ clang + ThinLTO only (no GCC — the patches are clang-only), config has
 `LTO_CLANG_THIN=y`. The full LLVM toolchain is wired in `llvm.nix` (pattern from
 nixpkgs#129806 / lovesegfault's linux-lto):
 
-- `stdenvLLVM` — a `clangUseLLVM` stdenv (pure LLVM, no GNU binutils) with the
-  kernel `makeFlags` extended by `ltoMakeflags`.
-- `ltoMakeflags` — `LLVM=1 LLVM_IAS=1` plus explicit `CC/LD/AR/NM/STRIP/OBJCOPY/
-  OBJDUMP/READELF` and the `HOST*` equivalents all pointing at LLVM, so the host
-  side is clang too (not GCC).
+- `stdenvLLVM` supplies the default Clang environment. The kernel package
+  accepts a standard `stdenv` override.
+- `CC`, `HOSTCC` and `HOSTCXX` use Clang from the selected `stdenv.cc`.
+  The kernel uses LLD and the LLVM tools for linking and object-file operations.
 - `kernelModuleLLVMOverride` — wraps `linuxPackagesFor` so out-of-tree modules
   (nvidia, zfs, …) build with the same LLVM flags and their `gcc` Makefile
   hardcodes are rewritten to `cc`. `linuxPackages-niko` already goes through it.
@@ -104,6 +103,31 @@ nixpkgs#129806 / lovesegfault's linux-lto):
 To pin a clang version, override `llvmPackages` in `llvm.nix`
 (`pkgs.pkgsBuildHost.llvmPackages` → e.g. `llvmPackages_20`).
 
+### ccache
+
+Wrap the kernel's own Clang environment to cache kernel and host-tool compilation.
+For a NixOS module with `niko-kernel` in scope, use
+
+```nix
+programs.ccache.enable = true;
+nix.settings.extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
+
+boot.kernelPackages = niko-kernel.lib.mkPackages (
+  niko-kernel.packages.x86_64-linux.default.override (old: {
+    stdenv = pkgs.ccacheStdenv.override {
+      inherit (old) stdenv;
+      extraConfig = ''
+        export CCACHE_DIR=${lib.escapeShellArg config.programs.ccache.cacheDir}
+        export CCACHE_UMASK=007
+      '';
+    };
+  })
+);
+```
+
+On the build host, activate the two cache settings before the first cached
+kernel build so the directory exists and the Nix daemon mounts it in the
+sandbox. Run `nix-ccache --show-stats` to see cache hits across rebuilds.
 
 ## Notes
 

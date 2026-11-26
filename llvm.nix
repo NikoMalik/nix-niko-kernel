@@ -14,10 +14,10 @@ rec {
   hostLLVM = pkgs.pkgsBuildHost.llvmPackages.override noBintools;
   buildLLVM = pkgs.pkgsBuildBuild.llvmPackages.override noBintools;
 
-  ltoMakeflags = [
+  ltoMakeflagsFor = cc: [
     "LLVM=1"
     "LLVM_IAS=1"
-    "CC=${buildLLVM.clangUseLLVM}/bin/clang"
+    "CC=${cc}/bin/clang"
     "LD=${buildLLVM.lld}/bin/ld.lld"
     "HOSTLD=${hostLLVM.lld}/bin/ld.lld"
     "AR=${buildLLVM.llvm}/bin/llvm-ar"
@@ -27,8 +27,8 @@ rec {
     "OBJCOPY=${buildLLVM.llvm}/bin/llvm-objcopy"
     "OBJDUMP=${buildLLVM.llvm}/bin/llvm-objdump"
     "READELF=${buildLLVM.llvm}/bin/llvm-readelf"
-    "HOSTCC=${hostLLVM.clangUseLLVM}/bin/clang"
-    "HOSTCXX=${hostLLVM.clangUseLLVM}/bin/clang++"
+    "HOSTCC=${cc}/bin/clang"
+    "HOSTCXX=${cc}/bin/clang++"
 
     "NIX_CC_WRAPPER_SUPPRESS_TARGET_WARNING=1"
   ];
@@ -40,7 +40,7 @@ rec {
         platform
         // {
           linux-kernel = (platform.linux-kernel or { }) // {
-            makeFlags = (platform.linux-kernel.makeFlags or [ ]) ++ ltoMakeflags;
+            makeFlags = (platform.linux-kernel.makeFlags or [ ]) ++ ltoMakeflagsFor stdenv'.cc;
           };
         };
 
